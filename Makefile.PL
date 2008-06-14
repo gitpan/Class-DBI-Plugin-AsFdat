@@ -1,10 +1,18 @@
-use ExtUtils::MakeMaker;
-WriteMakefile(
-    'NAME'         => 'Class::DBI::Plugin::AsFdat',
-    'VERSION_FROM' => 'lib/Class/DBI/Plugin/AsFdat.pm', # finds $VERSION
-    'PREREQ_PM'    => {
-        Test::More       => 0.32,
-        Class::DBI       => '3.0.11',
-        DateTime         => 0.2901,
-    },
-);
+use inc::Module::Install;
+
+all_from 'lib/Class/DBI/Plugin/AsFdat.pm';
+
+requires 'Test::More'      => 0.32;
+requires 'Class::DBI'      => '3.0.11';
+requires 'DateTime'        => 0.2901;
+requires 'Exporter'        => 5.62;
+
+test_requires 'Test::More';
+test_requires 'YAML';
+
+author_tests 'xt';
+use_test_base;
+auto_include;
+auto_install;
+WriteAll;
+

@@ -1,30 +1,27 @@
 package Class::DBI::Plugin::AsFdat;
 use strict;
 use warnings;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
+use Exporter 'import';
 use Scalar::Util qw/blessed/;
 
-sub import {
-    my $class = shift;
-    my $pkg   = caller(0);
+our @EXPORT = qw(as_fdat);
 
-    no strict 'refs';
-    *{"$pkg\::as_fdat"} = sub {
-        my $self = shift;
+sub as_fdat {
+    my $self = shift;
 
-        my $fdat;
-        for my $column ($self->columns) {
-            $fdat->{$column} = $self->get($column);
+    my $fdat;
+    for my $column ($self->columns) {
+        $fdat->{$column} = $self->get($column);
 
-            # inflate the datetime
-            if (blessed $fdat->{$column} and $fdat->{$column}->isa('DateTime')) {
-                for my $type (qw(year month day hour minute second)) {
-                    $fdat->{"${column}_$type"}  = $fdat->{$column}->$type;
-                }
+        # inflate the datetime
+        if (blessed $fdat->{$column} and $fdat->{$column}->isa('DateTime')) {
+            for my $type (qw(year month day hour minute second)) {
+                $fdat->{"${column}_$type"}  = $fdat->{$column}->$type;
             }
         }
-        return $fdat;
-    };
+    }
+    return $fdat;
 }
 
 1;
@@ -50,6 +47,16 @@ Class::DBI::Plugin::AsFdat - cdbi meets fillinform
 
 Class::DBI::Plugin::AsFdat is easy to convert CDBI object to fdat.
 `fdat' is data for HTML::FillInForm.
+
+=head1 METHODS
+
+=over 4
+
+=item as_fdat
+
+transform cdbi row instance to hashref.
+
+=back
 
 =head1 AUTHOR
 

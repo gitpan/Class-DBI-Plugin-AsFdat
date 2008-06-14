@@ -1,5 +1,10 @@
 Revision history for Perl extension Class::DBI::Plugin::AsFdat
 
+0.03
+
+    - use Exporter
+    - some tests moved to xt/
+
 0.02  Mon Mar 06 01:15:51 2006
     - more documents
 
